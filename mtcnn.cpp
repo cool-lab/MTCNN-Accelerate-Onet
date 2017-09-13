@@ -440,7 +440,7 @@ int main(int argc, char **argv)
 	cout << "loop test count: " << loop_cnt << endl;
 #endif
 
-	string root = "../img/";
+	string root = "./img/";
 	string name_list[7] = {
 		"0_Parade_marchingband_1_364.jpg",
 		"0_Parade_marchingband_1_408.jpg",
@@ -450,7 +450,7 @@ int main(int argc, char **argv)
 		"img_769.jpg",
 		"img_78.jpg"
 	};
-	MTCNN detector("../model");
+	MTCNN detector("./model");
 	float factor = 0.709f;
 	float threshold[3] = { 0.7f, 0.6f, 0.6f };
 
@@ -561,7 +561,7 @@ int main(int argc, char **argv)
 #endif
 
 
-	MTCNN detector("../model");
+	MTCNN detector("./model");
 	float factor = 0.709f;
 	float threshold[3] = { 0.7f, 0.6f, 0.6f };
 

@@ -4,7 +4,7 @@ Test on Tesla P40, loop each image for 100 times.
 
 1. With original ONet
 
-GPU Mem 573MiB
+1.1 minSize=15, GPU Mem 573MiB
 
 ```
 0_Parade_marchingband_1_364.jpg size: 1024 x 732
@@ -23,9 +23,29 @@ img_78.jpg size: 450 x 448
 Test for 100 loops, takes 25.249 second, average time: 0.25249s
 ```
 
+1.2 minSize=40, GPU Mem 485MiB
+
+```
+0_Parade_marchingband_1_364.jpg size: 1024 x 732
+Test for 100 loops, takes 24.1231 second, average time: 0.241231s
+0_Parade_marchingband_1_408.jpg size: 1024 x 706
+Test for 100 loops, takes 25.3205 second, average time: 0.253205s
+img_591.jpg size: 450 x 431
+Test for 100 loops, takes 7.51142 second, average time: 0.0751142s
+img_534.jpg size: 410 x 312
+Test for 100 loops, takes 6.55217 second, average time: 0.0655217s
+img_561.jpg size: 292 x 450
+Test for 100 loops, takes 5.49258 second, average time: 0.0549258s
+img_769.jpg size: 318 x 450
+Test for 100 loops, takes 7.21874 second, average time: 0.0721874s
+img_78.jpg size: 450 x 448
+Test for 100 loops, takes 8.3752 second, average time: 0.083752s
+```
+
+
 2. With half-sized ONet
 
-GPU Mem 511MiB
+2.1 minSize=15, GPU Mem 511MiB
 
 ```
 0_Parade_marchingband_1_364.jpg size: 1024 x 732
@@ -42,4 +62,23 @@ img_769.jpg size: 318 x 450
 Test for 100 loops, takes 14.2025 second, average time: 0.142025s
 img_78.jpg size: 450 x 448
 Test for 100 loops, takes 25.0197 second, average time: 0.250197s
+```
+
+2.2 minSize=40, GPU Mem 423MiB
+
+```
+0_Parade_marchingband_1_364.jpg size: 1024 x 732
+Test for 100 loops, takes 22.8825 second, average time: 0.228825s
+0_Parade_marchingband_1_408.jpg size: 1024 x 706
+Test for 100 loops, takes 23.2721 second, average time: 0.232721s
+img_591.jpg size: 450 x 431
+Test for 100 loops, takes 7.46511 second, average time: 0.0746511s
+img_534.jpg size: 410 x 312
+Test for 100 loops, takes 6.64397 second, average time: 0.0664397s
+img_561.jpg size: 292 x 450
+Test for 100 loops, takes 5.54881 second, average time: 0.0554881s
+img_769.jpg size: 318 x 450
+Test for 100 loops, takes 7.76955 second, average time: 0.0776955s
+img_78.jpg size: 450 x 448
+Test for 100 loops, takes 8.37166 second, average time: 0.0837166s
 ```
