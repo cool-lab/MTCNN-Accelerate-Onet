@@ -6,8 +6,9 @@
 #include <boost/shared_ptr.hpp>
 
 #define SHOW_IMAGE
-#define LOOP_TEST
+//#define LOOP_TEST
 #define USE_ONET_HALF
+#define READ_IMAGE_LIST
 
 using namespace caffe;
 using namespace std;
@@ -418,17 +419,28 @@ vector<FaceInfo> MTCNN::Detect(const cv::Mat& image, const int minSize, const fl
 	}
 }
 
+#ifndef READ_IMAGE_LIST
 int main(int argc, char **argv)
 {
+	int minSize = 15;
+
+	if (argc>1)
+	{
+		sscanf(argv[1], "%d", &minSize);
+	}
+
+	cout << "min detection size: " << minSize << endl;
+
 #ifdef LOOP_TEST	
 	int loop_cnt = 1;
-	if(argc>1)
+	if (argc>2)
 	{
-		sscanf(argv[1], "%d", &loop_cnt);
+		sscanf(argv[2], "%d", &loop_cnt);
 	}
+	cout << "loop test count: " << loop_cnt << endl;
 #endif
 
-	string root = "./img/";
+	string root = "../img/";
 	string name_list[7] = {
 		"0_Parade_marchingband_1_364.jpg",
 		"0_Parade_marchingband_1_408.jpg",
@@ -438,10 +450,10 @@ int main(int argc, char **argv)
 		"img_769.jpg",
 		"img_78.jpg"
 	};
-	MTCNN detector("./model");
+	MTCNN detector("../model");
 	float factor = 0.709f;
 	float threshold[3] = { 0.7f, 0.6f, 0.6f };
-	int minSize = 15;
+
 	for (int n = 0; n < 7;++n){
 		cv::Mat image = cv::imread(root + name_list[n], 1);
 #ifdef LOOP_TEST	
@@ -482,10 +494,145 @@ int main(int argc, char **argv)
 
 #ifdef SHOW_IMAGE
 		cv::imshow("image", image);
-		cv::waitKey(0);
+		int key = cv::waitKey(0);
+		if (key == 'q' || key == 'Q' || key == 27)
+		{
+			break;
+		}
 #endif
 	}
  
 	 
 	return 1;
 }
+
+#else
+
+int main(int argc, char **argv)
+{
+	//if (argc < 3)
+	//{
+	//	return main_original(argc, argv);
+	//}
+
+	int minSize = 15;
+
+	printf("Usage:\n"
+		"      %s <img_list_file> <img_root_dir> [<min_size>=15]\n"
+		"help: set <img_root_dir> to '-' if it's not used\n", argv[0]
+	);
+
+	if (argc < 3)
+	{
+		cout << "Please set path to <img_list_file> and <img_root_dir>" << endl;
+		exit(-1);
+	}
+
+	if (argc > 3)
+	{
+		sscanf(argv[3], "%d", &minSize);
+	}
+
+	cout << "min detection size: " << minSize << endl;
+	
+	string list_fname = argv[1];
+	string root_dir = "";
+
+	cout << "img_list_file: " << list_fname << endl;
+	cout << "img_root_dir: " << root_dir << endl;
+
+
+	if (argv[2] != "-")
+	{
+		root_dir = argv[2];
+	}
+
+#ifdef LOOP_TEST	
+	int loop_cnt = 1;
+	printf("Usage:\n"
+		"      %s <img_list_file> <img_root_dir> [<min_size>=15] [<loop_cnt>=1]\n"
+		"help: set <img_root_dir> to '-' if it's not used\n", argv[0]
+	);
+
+	if (argc>4)
+	{
+		sscanf(argv[4], "%d", &loop_cnt);
+	}
+#endif
+
+
+	MTCNN detector("../model");
+	float factor = 0.709f;
+	float threshold[3] = { 0.7f, 0.6f, 0.6f };
+
+	ifstream fs_img_list(list_fname);
+	string line;
+
+	if (!fs_img_list.is_open())
+	{
+		cout << "\n===> Failed to open " << list_fname << endl;
+	}
+
+	while(fs_img_list>>line)
+	{
+		cout << line << endl;
+		if (line[0] == '#')
+		{
+			continue;
+		}
+
+		string img_fname = root_dir + "/" + line;
+		string save_fname = img_fname + "_rlt.jpg";
+
+		cv::Mat image = cv::imread(img_fname, 1);
+#ifdef LOOP_TEST	
+		vector<FaceInfo> faceInfo;
+		double time_ttl = 0.0f;
+		for (int i = 0; i<loop_cnt; i++)
+		{
+			double t = (double)cv::getTickCount();
+			faceInfo = detector.Detect(image, minSize, threshold, factor, 3);
+			//std::cout << name_list[n]<<" time," << (double)(cv::getTickCount() - t) / cv::getTickFrequency() << "s"<<std::endl;
+			t = (double)(cv::getTickCount() - t) / cv::getTickFrequency();
+			time_ttl += t;
+		}
+		std::cout << name_list[n] << " size: " << image.cols << " x " << image.rows << endl;
+		std::cout << "Test for " << loop_cnt << " loops, takes " << time_ttl << " second, average time: " << time_ttl / loop_cnt << "s" << std::endl;
+#else
+		double t = (double)cv::getTickCount();
+		vector<FaceInfo> faceInfo = detector.Detect(image, minSize, threshold, factor, 3);
+		//std::cout << name_list[n]<<" time," << (double)(cv::getTickCount() - t) / cv::getTickFrequency() << "s"<<std::endl;
+		t = (double)(cv::getTickCount() - t) / cv::getTickFrequency();
+		std::cout << img_fname << " size: " << image.cols << " x " << image.rows
+			<< " time," << t << "s" << std::endl;
+#endif		
+		for (int i = 0; i < faceInfo.size(); i++) {
+			int x = (int)faceInfo[i].bbox.xmin;
+			int y = (int)faceInfo[i].bbox.ymin;
+			int w = (int)(faceInfo[i].bbox.xmax - faceInfo[i].bbox.xmin + 1);
+			int h = (int)(faceInfo[i].bbox.ymax - faceInfo[i].bbox.ymin + 1);
+			cv::rectangle(image, cv::Rect(x, y, w, h), cv::Scalar(255, 0, 0), 2);
+		}
+		for (int i = 0; i < faceInfo.size(); i++) {
+			float *landmark = faceInfo[i].landmark;
+			for (int j = 0; j < 5; j++) {
+				cv::circle(image, cv::Point((int)landmark[2 * j], (int)landmark[2 * j + 1]), 1, cv::Scalar(255, 0, 255), 2);
+			}
+		}
+		cv::imwrite(save_fname, image);
+
+#ifdef SHOW_IMAGE
+		cv::imshow("image", image);
+		
+		int key = cv::waitKey(0);
+		if(key=='q' || key=='Q' || key==27)
+		{
+			break;
+		}
+#endif
+	}
+
+
+	return 1;
+}
+#endif
