@@ -77,7 +77,7 @@ if (NOT CMAKE_HOST_WIN32)
 
 else()
 	message(STATUS "Try to find Caffe package.")
-	#message(SEND_ERROR "Please set CAFFE_DIR, CUDA_DIR and Caffe_DEPENDENCIES_DIR in the CMakelist.txt and comment this line.")
+	message(SEND_ERROR "Please set CAFFE_DIR, CUDA_DIR and Caffe_DEPENDENCIES_DIR in the CMakelist.txt and comment this line.")
 
 	set(CAFFE_DIR "C:/zyf/github/caffe")
 	set(CAFFE_BUILD_DIR "${CAFFE_DIR}/build")
