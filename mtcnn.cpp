@@ -6,8 +6,8 @@
 #include <boost/shared_ptr.hpp>
 
 #define SHOW_IMAGE
-//#define LOOP_TEST
-#define USE_ONET_HALF
+#define LOOP_TEST
+//#define USE_ONET_HALF
 #define READ_IMAGE_LIST
 
 using namespace caffe;
@@ -596,7 +596,7 @@ int main(int argc, char **argv)
 			t = (double)(cv::getTickCount() - t) / cv::getTickFrequency();
 			time_ttl += t;
 		}
-		std::cout << name_list[n] << " size: " << image.cols << " x " << image.rows << endl;
+		std::cout << img_fname << " size: " << image.cols << " x " << image.rows << endl;
 		std::cout << "Test for " << loop_cnt << " loops, takes " << time_ttl << " second, average time: " << time_ttl / loop_cnt << "s" << std::endl;
 #else
 		double t = (double)cv::getTickCount();
