@@ -23,6 +23,25 @@ img_78.jpg size: 450 x 448
 Test for 100 loops, takes 25.249 second, average time: 0.25249s
 ```
 
+minSize=15, GPU Mem 513~601MiB
+```
+img2/got_640x480.jpg size: 640 x 480
+Test for 100 loops, takes 35.5166 second, average time: 0.355166s
+got_1280x720.jpg
+img2/got_1280x720.jpg size: 1280 x 720
+Test for 100 loops, takes 73.6084 second, average time: 0.736084s
+```
+
+minSize=15, On XPS-9550
+```
+got_640x480.jpg
+../img2/got_640x480.jpg size: 640 x 480
+Test for 100 loops, takes 10.3145 second, average time: 0.103145s
+got_1280x720.jpg
+../img2/got_1280x720.jpg size: 1280 x 720
+Test for 100 loops, takes 15.7854 second, average time: 0.157854s
+```
+
 1.2 minSize=40, GPU Mem 485MiB
 
 ```
@@ -42,6 +61,24 @@ img_78.jpg size: 450 x 448
 Test for 100 loops, takes 8.3752 second, average time: 0.083752s
 ```
 
+minSize=40, GPU Mem 395~477MiB
+```
+img2/got_640x480.jpg size: 640 x 480
+Test for 100 loops, takes 21.3552 second, average time: 0.213552s
+got_1280x720.jpg
+img2/got_1280x720.jpg size: 1280 x 720
+Test for 100 loops, takes 26.5001 second, average time: 0.265001s
+```
+
+minSize=40, On XPS-9550
+```
+got_640x480.jpg
+../img2/got_640x480.jpg size: 640 x 480
+Test for 100 loops, takes 6.14451 second, average time: 0.0614451s
+got_1280x720.jpg
+../img2/got_1280x720.jpg size: 1280 x 720
+Test for 100 loops, takes 7.50647 second, average time: 0.0750647s
+```
 
 2. With half-sized ONet
 
@@ -64,6 +101,25 @@ img_78.jpg size: 450 x 448
 Test for 100 loops, takes 25.0197 second, average time: 0.250197s
 ```
 
+minSize=15, GPU Mem 539MiB
+```
+img2/got_640x480.jpg size: 640 x 480
+Test for 100 loops, takes 34.3745 second, average time: 0.343745s
+got_1280x720.jpg
+img2/got_1280x720.jpg size: 1280 x 720
+Test for 100 loops, takes 72.4398 second, average time: 0.724398s
+```
+
+minSize=15, On XPS-9550
+```
+got_640x480.jpg
+../img2/got_640x480.jpg size: 640 x 480
+Test for 100 loops, takes 9.59571 second, average time: 0.0959571s
+got_1280x720.jpg
+../img2/got_1280x720.jpg size: 1280 x 720
+Test for 100 loops, takes 14.629 second, average time: 0.14629s
+```
+
 2.2 minSize=40, GPU Mem 423MiB
 
 ```
@@ -81,4 +137,23 @@ img_769.jpg size: 318 x 450
 Test for 100 loops, takes 7.76955 second, average time: 0.0776955s
 img_78.jpg size: 450 x 448
 Test for 100 loops, takes 8.37166 second, average time: 0.0837166s
+```
+
+minSize=40, GPU Mem 415~431MiB
+```
+img2/got_640x480.jpg size: 640 x 480
+Test for 100 loops, takes 21.1098 second, average time: 0.211098s
+got_1280x720.jpg
+img2/got_1280x720.jpg size: 1280 x 720
+Test for 100 loops, takes 26.2878 second, average time: 0.262878s
+```
+
+minSize=40, On XPS-9550
+```
+got_640x480.jpg
+../img2/got_640x480.jpg size: 640 x 480
+Test for 100 loops, takes 5.47882 second, average time: 0.0547882s
+got_1280x720.jpg
+../img2/got_1280x720.jpg size: 1280 x 720
+Test for 100 loops, takes 6.68324 second, average time: 0.0668324s
 ```
