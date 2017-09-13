@@ -424,7 +424,7 @@ int main(int argc, char **argv)
 	int loop_cnt = 1;
 	if(argc>1)
 	{
-		sprintf(argv[1], "%d", &loop_cnt);
+		sscanf(argv[1], "%d", &loop_cnt);
 	}
 #endif
 
@@ -445,23 +445,24 @@ int main(int argc, char **argv)
 	for (int n = 0; n < 7;++n){
 		cv::Mat image = cv::imread(root + name_list[n], 1);
 #ifdef LOOP_TEST	
+		vector<FaceInfo> faceInfo;
 		double time_ttl = 0.0f;
 		for(int i=0; i<loop_cnt; i++)
 		{
 			double t = (double)cv::getTickCount();
-			vector<FaceInfo> faceInfo = detector.Detect(image, minSize, threshold, factor, 3);
+			faceInfo = detector.Detect(image, minSize, threshold, factor, 3);
 			//std::cout << name_list[n]<<" time," << (double)(cv::getTickCount() - t) / cv::getTickFrequency() << "s"<<std::endl;
 			t = (double)(cv::getTickCount() - t) / cv::getTickFrequency();
 			time_ttl += t;
 		}
-		std::cout << name_list[n] << " size: " << image.col() << " x " << image.row() << endl;
-		std::cout << "Test for " << loop_cnt << " loops, takes " << time_ttl << " second, average time: " << t << "s"<<std::endl;
+		std::cout << name_list[n] << " size: " << image.cols << " x " << image.rows << endl;
+		std::cout << "Test for " << loop_cnt << " loops, takes " << time_ttl << " second, average time: " << time_ttl/loop_cnt << "s"<<std::endl;
 #else
 		double t = (double)cv::getTickCount();
 		vector<FaceInfo> faceInfo = detector.Detect(image, minSize, threshold, factor, 3);
 		//std::cout << name_list[n]<<" time," << (double)(cv::getTickCount() - t) / cv::getTickFrequency() << "s"<<std::endl;
 		t = (double)(cv::getTickCount() - t) / cv::getTickFrequency();
-		std::cout << name_list[n] << " size: " << image.col() << " x " << image.row()
+		std::cout << name_list[n] << " size: " << image.cols << " x " << image.rows
 			<<" time," << t << "s"<<std::endl;		
 #endif		
 		for (int i = 0; i < faceInfo.size(); i++){
