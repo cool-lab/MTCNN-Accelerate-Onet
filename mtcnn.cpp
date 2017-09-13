@@ -6,6 +6,7 @@
 #include <boost/shared_ptr.hpp>
 
 #define SHOW_IMAGE
+#define LOOP_TEST
 
 using namespace caffe;
 using namespace std;
@@ -415,6 +416,14 @@ vector<FaceInfo> MTCNN::Detect(const cv::Mat& image, const int minSize, const fl
 
 int main(int argc, char **argv)
 {
+#ifdef LOOP_TEST	
+	int loop_cnt = 1;
+	if(argc>1)
+	{
+		sprintf(argv[1], "%d", &loop_cnt);
+	}
+#endif
+
 	string root = "./img/";
 	string name_list[7] = {
 		"0_Parade_marchingband_1_364.jpg",
@@ -431,9 +440,26 @@ int main(int argc, char **argv)
 	int minSize = 15;
 	for (int n = 0; n < 7;++n){
 		cv::Mat image = cv::imread(root + name_list[n], 1);
+#ifdef LOOP_TEST	
+		double time_ttl = 0.0f;
+		for(int i=0; i<loop_cnt; i++)
+		{
+			double t = (double)cv::getTickCount();
+			vector<FaceInfo> faceInfo = detector.Detect(image, minSize, threshold, factor, 3);
+			//std::cout << name_list[n]<<" time," << (double)(cv::getTickCount() - t) / cv::getTickFrequency() << "s"<<std::endl;
+			t = (double)(cv::getTickCount() - t) / cv::getTickFrequency();
+			time_ttl += t;
+		}
+		std::cout << name_list[n] << " size: " << image.col() << " x " << image.row() << endl;
+		std::cout << "Test for " << loop_cnt << " loops, takes " << time_ttl << " second, average time: " << t << "s"<<std::endl;
+#else
 		double t = (double)cv::getTickCount();
 		vector<FaceInfo> faceInfo = detector.Detect(image, minSize, threshold, factor, 3);
-		std::cout << name_list[n]<<" time," << (double)(cv::getTickCount() - t) / cv::getTickFrequency() << "s"<<std::endl;
+		//std::cout << name_list[n]<<" time," << (double)(cv::getTickCount() - t) / cv::getTickFrequency() << "s"<<std::endl;
+		t = (double)(cv::getTickCount() - t) / cv::getTickFrequency();
+		std::cout << name_list[n] << " size: " << image.col() << " x " << image.row()
+			<<" time," << t << "s"<<std::endl;		
+#endif		
 		for (int i = 0; i < faceInfo.size(); i++){
 			int x = (int)faceInfo[i].bbox.xmin;
 			int y = (int)faceInfo[i].bbox.ymin;
