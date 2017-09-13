@@ -5,6 +5,8 @@
 #include <omp.h>
 #include <boost/shared_ptr.hpp>
 
+#define SHOW_IMAGE
+
 using namespace caffe;
 using namespace std;
 using namespace cv;
@@ -446,8 +448,11 @@ int main(int argc, char **argv)
 			}
 		}
 		cv::imwrite(root + "_res_" + name_list[n], image);
+
+#ifdef SHOW_IMAGE
 		cv::imshow("image", image);
 		cv::waitKey(0);
+#endif
 	}
  
 	 
